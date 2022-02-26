@@ -29,7 +29,7 @@ const Typography = forwardRef<HTMLElement, TypographyProps>(
 Typography.displayName = "Typography";
 
 export const FLUID_FONT_SIZES = {
-  display: "clamp(2.625rem,6vw,3rem)",
+  display: "clamp(2.625rem,6vw,3.5rem)",
   h1: "clamp(2.25rem,6vw,3rem)",
   h2: "clamp(1.625rem,4.5vw,2.25rem)",
   h4: "clamp(1.125rem,3vw,1.5rem)",
