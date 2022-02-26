@@ -17,6 +17,13 @@ declare module "@mui/material/Typography" {
 }
 
 const theme = createTheme({
+  palette: {
+    primary: {
+      light: "#639df1",
+      main: "#5292F0",
+      dark: "#347fed",
+    },
+  },
   typography: {
     display: {
       fontSize: "3.5rem",
