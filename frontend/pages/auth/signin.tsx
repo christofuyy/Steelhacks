@@ -1,65 +1,82 @@
 import type { NextPage } from "next";
-import { auth } from "constants/firebase";
-import {
-  GithubAuthProvider,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-  fetchSignInMethodsForEmail,
-  linkWithCredential,
-} from "firebase/auth";
-import { FirebaseError } from "firebase/app";
+import { GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import { useAuth } from "contexts/AuthContext";
 
-const PROVIDER_ID_MAP = {
-  [GithubAuthProvider.PROVIDER_ID]: GithubAuthProvider,
-  [GoogleAuthProvider.PROVIDER_ID]: GoogleAuthProvider,
-};
+import Container from "@mui/material/Container";
+import Stack from "@mui/material/Stack";
+import Typography from "components/elements/Typography";
+import Link from "components/elements/Link";
+import Card from "@mui/material/Card";
+import Button from "components/elements/Button";
+import LoadingPage from "components/templates/LoadingPage";
+import Redirect from "components/elements/Redirect";
 
-type Provider = GoogleAuthProvider | GithubAuthProvider;
+import { FaGoogle, FaGithub } from "react-icons/fa";
+
+const googleProvider = new GoogleAuthProvider();
+const githubProvider = new GithubAuthProvider();
 
 const SignIn: NextPage = () => {
-  const { user, loading } = useAuth();
-  const googleProvider = new GoogleAuthProvider();
-  const githubProvider = new GithubAuthProvider();
+  const { user, loading, signIn } = useAuth();
 
-  const signIn = (provider: Provider, providerType) => async () => {
-    try {
-      const res = await signInWithPopup(auth, provider);
-      const credential = providerType.credentialFromResult(res);
-    } catch (err) {
-      console.error((err as FirebaseError).message);
-
-      if (
-        (err as FirebaseError).code ===
-        "auth/account-exists-with-different-credential"
-      ) {
-        const pendingCred = providerType.credentialFromError(err);
-        const email = err.customData?.email;
-        const methods = await fetchSignInMethodsForEmail(auth, email);
-
-        const newProvider = new PROVIDER_ID_MAP[methods[0]]();
-        console.log("Trying new provider", newProvider);
-        const newRes = await signInWithPopup(auth, newProvider);
-        await linkWithCredential(newRes.user, pendingCred);
-      }
-    }
-  };
-
-  const handleSignOut = () => signOut(auth);
-
+  if (loading) return <LoadingPage />;
+  if (user) return <Redirect to="/dashboard" />;
   return (
-    <div>
-      <h1>Sign IN Page</h1>
-      {user ? <p>Logged in as {user.email}</p> : <p>Not logged in</p>}
-      <button onClick={signIn(googleProvider, GoogleAuthProvider)}>
-        Sign In With Google
-      </button>
-      <button onClick={signIn(githubProvider, GithubAuthProvider)}>
-        Sign In with GitHub
-      </button>
-      <button onClick={handleSignOut}>Sign Out</button>
-    </div>
+    <Container
+      maxWidth="xs"
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column",
+        minHeight: "100vh",
+      }}
+    >
+      <Stack alignItems="center" mb={2}>
+        <Typography variant="h2" color="primary.main">
+          HelloWorld
+        </Typography>
+        <Typography variant="h2">Sign in to your account</Typography>
+        <Typography variant="body1">
+          Or{" "}
+          <Link href="/" underline="hover">
+            return to the home page
+          </Link>
+        </Typography>
+      </Stack>
+      <Card
+        sx={{ p: 2, width: 1, border: 1, borderColor: "grey.200" }}
+        elevation={4}
+      >
+        <Stack spacing={1}>
+          <Typography variant="body1" align="center">
+            Sign in with
+          </Typography>
+          <Button
+            sx={{ border: 1, borderColor: "grey.300", bgcolor: "white" }}
+            variant="contained"
+            size="large"
+            color="inherit"
+            startIcon={<FaGoogle />}
+            disableElevation={false}
+            onClick={signIn(googleProvider, GoogleAuthProvider)}
+          >
+            Google
+          </Button>
+          <Button
+            sx={{ border: 1, borderColor: "grey.300", bgcolor: "white" }}
+            size="large"
+            color="inherit"
+            variant="contained"
+            startIcon={<FaGithub />}
+            disableElevation={false}
+            onClick={signIn(githubProvider, GithubAuthProvider)}
+          >
+            GitHub
+          </Button>
+        </Stack>
+      </Card>
+    </Container>
   );
 };
 
