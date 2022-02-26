@@ -17,6 +17,13 @@ declare module "@mui/material/Typography" {
 }
 
 const theme = createTheme({
+  palette: {
+    primary: {
+      light: "#639df1",
+      main: "#5292F0",
+      dark: "#347fed",
+    },
+  },
   typography: {
     display: {
       fontSize: "3.5rem",
@@ -44,6 +51,7 @@ const theme = createTheme({
     },
     button: {
       textTransform: "none",
+      fontWeight: 700,
     },
     overline: {
       fontSize: "1.125rem",
@@ -53,5 +61,27 @@ const theme = createTheme({
     fontFamily: 'Lato, "sans-serif"',
   },
 });
+
+theme.components = {
+  MuiButton: {
+    defaultProps: {
+      disableElevation: true,
+    },
+    styleOverrides: {
+      outlined: { padding: "0.3125em 0.9375em" },
+      contained: { padding: "0.375em 1em" },
+      text: { padding: "0.375em 0.5em" },
+      sizeSmall: { fontSize: "clamp(0.8125rem,2vw,0.875rem)" },
+      sizeMedium: { fontSize: "clamp(0.875rem,2vw,1rem)" },
+      sizeLarge: { fontSize: "clamp(1rem,2vw,1.125rem)" },
+      startIcon: {
+        fontSize: "clamp(1.125rem, 3vw, 1.5rem)",
+      },
+      endIcon: {
+        fontSize: "clamp(1.125rem, 3vw, 1.5rem)",
+      },
+    },
+  },
+};
 
 export default theme;
