@@ -47,6 +47,8 @@ export default function Header() {
             open={open}
             onClose={handleClose}
             onClick={handleClose}
+            transformOrigin={{ horizontal: "right", vertical: "top" }}
+            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
             <MenuItem onClick={() => router.push("/auth/signout")}>
               <ListItemIcon>
