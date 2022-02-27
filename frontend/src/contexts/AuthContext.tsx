@@ -11,7 +11,7 @@ import {
 } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 
-export const AuthContext = createContext({});
+export const AuthContext = createContext({ user: null, loading: false });
 
 export const useAuth = () => useContext(AuthContext);
 
