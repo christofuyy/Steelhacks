@@ -14,7 +14,7 @@ interface DropzoneProps {
 
 export default function FileDropField(props: DropzoneProps) {
   const { accept, label, name } = props;
-  const [_, __, helpers] = useField(name);
+  const [field, __, helpers] = useField(name);
 
   const onDrop = useCallback(
     (acceptedFiles) => {
@@ -24,12 +24,11 @@ export default function FileDropField(props: DropzoneProps) {
     [helpers.setValue]
   );
 
-  const { acceptedFiles, getRootProps, getInputProps, isDragActive } =
-    useDropzone({
-      onDrop,
-      accept,
-      multiple: false,
-    });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept,
+    multiple: false,
+  });
 
   const inputProps = getInputProps();
 
@@ -56,7 +55,7 @@ export default function FileDropField(props: DropzoneProps) {
       {...getRootProps()}
     >
       <input {...inputProps} />
-      {acceptedFiles.length > 0 ? (
+      {field.value ? (
         <Stack
           direction="row"
           alignItems="center"
@@ -64,7 +63,7 @@ export default function FileDropField(props: DropzoneProps) {
           color="primary.main"
         >
           <MdImage fontSize="2rem" />
-          <Typography variant="h4">{acceptedFiles[0].name}</Typography>
+          <Typography variant="h4">{field.value.name}</Typography>
         </Stack>
       ) : (
         <Typography
