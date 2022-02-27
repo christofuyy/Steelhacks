@@ -10,13 +10,10 @@ export default function Hero() {
       <Container>
         <Stack direction="row" alignItems="center">
           <Stack alignItems="flex-start" maxWidth="60ch" spacing={2}>
-            <Typography variant="h1">
-              Enim eu turpis egestas pretium aenean
-            </Typography>
+            <Typography variant="h1">Welcome to XScanner</Typography>
             <Typography variant="body1" color="text.secondary">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Tellus
-              in metus vulputate eu scelerisque felis imperdiet.
+              XScanner is a machine learning model that takes in human lung
+              X-Ray images and outputs a classification of health/unhealthy.
             </Typography>
             <Button variant="contained">Learn More</Button>
           </Stack>

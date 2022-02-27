@@ -15,7 +15,7 @@ export default function Header(props: BoxProps) {
     <Box py={2} {...props}>
       <Container>
         <Stack direction="row" justifyContent="space-between">
-          <Typography variant="h4">HelloWorld</Typography>
+          <Typography variant="h4">XScanner</Typography>
           <Stack direction="row" spacing={4}>
             {SECTIONS.map((section) => (
               <Link
