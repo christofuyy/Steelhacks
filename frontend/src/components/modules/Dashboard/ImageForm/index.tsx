@@ -1,9 +1,16 @@
+import { v4 as uuidv4 } from "uuid";
+import path from "path";
+import { useAuth } from "contexts/AuthContext";
 import { Formik, Form, FormikHelpers } from "formik";
 import Stack from "@mui/material/Stack";
 import FileDropField from "components/elements/FileDropField";
 import Button from "components/elements/Button/index";
 import Alert from "@mui/material/Alert";
 import imageUploadValidation from "constants/validations/imageUpload";
+
+import { storage, db } from "constants/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { collection, doc, setDoc } from "firebase/firestore/lite";
 
 type ImageUploadFormValues = {
   image: File | string;
@@ -13,20 +20,37 @@ const initialValues: ImageUploadFormValues = {
   image: "",
 };
 
-const onSubmit = (
-  values: ImageUploadFormValues,
-  helpers: FormikHelpers<ImageUploadFormValues>
-) => {
-  const { image } = values;
+export default function ImageForm({ images, setImages }) {
+  const { user } = useAuth();
 
-  console.log(image);
-};
+  const handleSubmit = async (
+    values: ImageUploadFormValues,
+    helpers: FormikHelpers<ImageUploadFormValues>
+  ) => {
+    const { image } = values;
 
-export default function ImageForm() {
+    const objectStorageFilePath = `users/${user.uid}/images/${uuidv4()}`;
+    const objectRef = ref(storage, objectStorageFilePath);
+    await uploadBytes(objectRef, image as File);
+
+    const fileName = path.basename(objectStorageFilePath);
+
+    const downloadUrl = await getDownloadURL(objectRef);
+    console.log(downloadUrl);
+    const imageCollectionRef = collection(db, "users");
+    const imageDocRef = doc(imageCollectionRef, user.uid, "images", fileName);
+    await setDoc(imageDocRef, {
+      downloadUrl,
+    });
+
+    setImages([{ downloadUrl }, ...images]);
+
+    helpers.resetForm();
+  };
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
       validationSchema={imageUploadValidation}
     >
       {({ isSubmitting, errors }) => {
@@ -45,7 +69,7 @@ export default function ImageForm() {
                   variant="contained"
                   loading={isSubmitting}
                 >
-                  Predict
+                  Upload
                 </Button>
               </Stack>
             </Form>
