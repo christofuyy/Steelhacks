@@ -8,7 +8,7 @@
         <script>
           async function loadModel() {
             model = undefined;
-            model = await tf.loadLayersModel("C:/Users/mitch/Downloads/SavedModelJS/model.json");
+            model = await tf.loadLayersModel("localstorage://model.json");
             console.log("model loaded")
           }
           loadModel();
