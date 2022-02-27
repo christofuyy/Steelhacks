@@ -22,7 +22,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     return onAuthStateChanged(auth, async (currUser: FirebaseUser) => {
       setLoading(true);
-      console.log(currUser);
+      console.log('AuthContext: ',currUser);
       setUser(currUser);
       setLoading(false);
     });

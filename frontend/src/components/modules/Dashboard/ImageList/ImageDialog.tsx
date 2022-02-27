@@ -3,7 +3,11 @@ import Stack from "@mui/material/Stack";
 import Typography from "components/elements/Typography";
 import Card from "@mui/material/Card";
 
-export default function ImageDialog({ open, onClose, imageSrc }) {
+export default function ImageDialog({ open, onClose, imageSrc, data }) {
+  const { healthyProb, unhealthyProb } = data;
+  console.log('healthyprob:',healthyProb)
+  console.log('unhealthyprob:',unhealthyProb)
+
   return (
     <Dialog
       open={open}
@@ -23,7 +27,10 @@ export default function ImageDialog({ open, onClose, imageSrc }) {
           />
         </Card>
         <Stack width={0.7}>
-          <Typography>Inference Result</Typography>
+          <Typography>Probability of being healthy: {healthyProb}</Typography>
+          <Typography>
+            Probability of being unhealthy: {unhealthyProb};
+          </Typography>
         </Stack>
       </Stack>
     </Dialog>

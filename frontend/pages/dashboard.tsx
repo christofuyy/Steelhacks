@@ -21,7 +21,14 @@ const Dashboard: NextPage = () => {
 
     const q = query(collection(db, "users", user.uid, "images"));
     getDocs(q).then((querySnapshot) => {
-      const docs = querySnapshot.docs.map((doc) => doc.data());
+      const docs = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          downloadUrl: data.downloadUrl,
+          healthyProb: parseFloat(data.healthyProb),
+          unhealthyProb: parseFloat(data.unhealthyProb),
+        };
+      });
       setImages(docs);
     });
   }, [loading]);
