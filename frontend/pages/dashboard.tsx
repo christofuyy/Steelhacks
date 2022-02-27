@@ -17,7 +17,7 @@ const Dashboard: NextPage = () => {
   const [images, setImages] = useState([]);
 
   useEffect(() => {
-    if (loading) return;
+    if (!user) return;
 
     const q = query(collection(db, "users", user.uid, "images"));
     getDocs(q).then((querySnapshot) => {
