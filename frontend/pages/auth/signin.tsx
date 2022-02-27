@@ -34,7 +34,7 @@ const SignIn: NextPage = () => {
     >
       <Stack alignItems="center" mb={2}>
         <Typography variant="h2" color="primary.main">
-          HelloWorld
+          XScanner
         </Typography>
         <Typography variant="h2">Sign in to your account</Typography>
         <Typography variant="body1">
