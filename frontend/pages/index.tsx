@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Button from "components/elements/Button";
+import Stack from "@mui/material/Stack";
 import { useAuth } from "contexts/AuthContext";
 import LoadingPage from "components/templates/LoadingPage";
 import Typography from "components/elements/Typography";
@@ -15,9 +16,17 @@ const Home: NextPage = () => {
       ) : (
         <Typography>Currently signed in as {user.email}</Typography>
       )}
-      <Button href={user !== null ? "/auth/signout" : "/auth/signin"}>
-        {user !== null ? "Sign Out" : "Sign In"}
-      </Button>
+      <Stack spacing={2} alignItems="flex-start">
+        <Button variant="contained" href="/dashboard" disabled={user === null}>
+          Dashboard
+        </Button>
+        <Button
+          variant="contained"
+          href={user !== null ? "/auth/signout" : "/auth/signin"}
+        >
+          {user !== null ? "Sign Out" : "Sign In"}
+        </Button>
+      </Stack>
     </div>
   );
 };
