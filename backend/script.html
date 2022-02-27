@@ -7,8 +7,7 @@
     <head>
         <script>
           async function loadModel() {
-            model = undefined;
-            model = await tf.loadLayersModel("localstorage://model.json");
+            let model = await tf.loadLayersModel("https://firebasestorage.googleapis.com/v0/b/steelhacks-1863e.appspot.com/o/model.json?alt=media&token=717afc5b-b4af-4d98-a912-8dd7645eec06");
             console.log("model loaded")
           }
           loadModel();
