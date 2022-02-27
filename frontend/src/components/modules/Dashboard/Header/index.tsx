@@ -30,7 +30,7 @@ export default function Header() {
         >
           <Typography variant="h4" color="primary.light">
             <Link href="/" underline="none">
-              HelloWorld
+              XScanner
             </Link>
           </Typography>
           <Stack ml={4} mr="auto">
