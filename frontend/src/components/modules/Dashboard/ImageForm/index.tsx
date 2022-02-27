@@ -1,9 +1,11 @@
+import { useAuth } from "contexts/AuthContext";
 import { Formik, Form, FormikHelpers } from "formik";
 import Stack from "@mui/material/Stack";
 import FileDropField from "components/elements/FileDropField";
 import Button from "components/elements/Button/index";
 import Alert from "@mui/material/Alert";
 import imageUploadValidation from "constants/validations/imageUpload";
+import ImageStorageRef from "util/Image/ImageStorageRef";
 
 type ImageUploadFormValues = {
   image: File | string;
@@ -13,20 +15,27 @@ const initialValues: ImageUploadFormValues = {
   image: "",
 };
 
-const onSubmit = (
-  values: ImageUploadFormValues,
-  helpers: FormikHelpers<ImageUploadFormValues>
-) => {
-  const { image } = values;
+export default function ImageForm({ images, setImages }) {
+  const { user } = useAuth();
 
-  console.log(image);
-};
+  const handleSubmit = async (
+    values: ImageUploadFormValues,
+    helpers: FormikHelpers<ImageUploadFormValues>
+  ) => {
+    const { image } = values;
 
-export default function ImageForm() {
+    const imgRef = new ImageStorageRef(image as File, user.uid);
+    const downloadUrl = await imgRef.upload();
+
+    setImages([{ downloadUrl }, ...images]);
+
+    helpers.resetForm();
+  };
+
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
       validationSchema={imageUploadValidation}
     >
       {({ isSubmitting, errors }) => {
@@ -45,7 +54,7 @@ export default function ImageForm() {
                   variant="contained"
                   loading={isSubmitting}
                 >
-                  Predict
+                  Upload
                 </Button>
               </Stack>
             </Form>

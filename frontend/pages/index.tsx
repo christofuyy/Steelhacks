@@ -1,29 +1,22 @@
-import type { NextPage } from 'next'
-import { signIn, signOut, useSession} from 'next-auth/react'
+import type { NextPage } from "next";
+import { useAuth } from "contexts/AuthContext";
+import LoadingPage from "components/templates/LoadingPage";
+import Box from "@mui/material/Box";
+import Header from "components/modules/Header";
+import Hero from "components/modules/Landing/Hero";
 
 const Home: NextPage = () => {
-  const {data: session, status} = useSession();
-  const loading = status === "loading"
+  const { loading } = useAuth();
 
-  if (loading){
-    return null
-  }
-
-  if (!loading && !session){
-    return (
-      <>
-        <div>BRO LOG IN</div>
-        <button onClick={() => signIn()}>Sign In</button>
-      </>
-
-    )
-  }
+  if (loading) return <LoadingPage />;
   return (
     <>
-      <div>Hello World</div>
-      <button onClick={() => signOut()}>Sign Out</button>
+      <Box bgcolor="#EFF6FF">
+        <Header />
+        <Hero />
+      </Box>
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
